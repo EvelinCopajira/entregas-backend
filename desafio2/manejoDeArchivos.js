@@ -71,7 +71,7 @@ class Contenedor {
     const objetoFiltrado = objetos.filter((elemento) => elemento.id !== id);
     //Si el id no existe no cambió el tamaño de mi []
     if (objetoFiltrado.length === objetos.length) {
-      throw new Error(`Error al borrar: no se encontró el ${id}`);
+      throw new Error(`Error al borrar: no se encontró el id ${id}`);
     }
 
     //Escribir/guardar el nuevo [] con el objeto borrado usando async/await - try/catch
@@ -97,10 +97,10 @@ class Contenedor {
 const listaProductos = new Contenedor("./productos.txt");
 
 //Listado de productos - agregar SAVE
-//listaProductos.save({ title: "Pantalon corto", price: 150 });
+//listaProductos.save({ title: "Pantalon", price: 150 });
 
 //Listado de productos - buscar por id GET BY ID
-listaProductos.getById(2);
+listaProductos.getById(44);
 
 //Listado de productos - traer todos los disponibles GET ALL
 //listaProductos.getAll();

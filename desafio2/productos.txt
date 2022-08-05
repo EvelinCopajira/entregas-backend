@@ -1,7 +1,1 @@
-[
-  {
-    "id": 2,
-    "title": "Pantalon corto",
-    "price": 150
-  }
-]
+[]
