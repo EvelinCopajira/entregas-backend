@@ -1,7 +1,7 @@
 [
   {
     "id": 2,
-    "title": "Remera",
-    "price": 100
+    "title": "Pantalon corto",
+    "price": 150
   }
 ]
