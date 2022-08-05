@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "title": "Remera",
+    "price": 100
+  },
+  {
+    "id": "[object Object]1",
+    "title": "Remera",
+    "price": 100
+  }
+]
