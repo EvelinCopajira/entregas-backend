@@ -23,7 +23,7 @@ class Contenedor {
         nuevoId = ultimoId + 1;
       }
       //.push del nuevo producto al [] y le sumo la propiedad id
-      objetos.push({ id: nuevoId, ...nuevoObjeto });
+      objetos.push({ ...nuevoObjeto, id: nuevoId });
 
       //Escribir/guardar el nuevo [] con el objeto agregado
       await fs.writeFile(this.ruta, JSON.stringify(objetos, null, 2));
@@ -43,13 +43,13 @@ class Contenedor {
 
       //Si al buscar no encuentra nada, entonces el resultado no existe que avise por consola, si no que traiga el producto con ese id
       if (objetoFiltrado.length === 0) {
-        console.log(`Error al buscar, no se encontró el id ${id}`);
+        throw new Error(`No se encontró el id ${id}`);
       } else {
         //Escribir/guardar el nuevo [] con el objeto buscado
         return objetoFiltrado[0];
       }
     } catch (error) {
-      throw new Error(`Error: ${error}`);
+      console.log(`Error getById: ${error}`);
     }
   }
 
@@ -67,16 +67,18 @@ class Contenedor {
     try {
       //Obtenengo los datos existentes con getAll()
       const objetos = await this.getAll();
+
       //.filter para identificar el objeto a elimianar por id
       const objetoFiltrado = objetos.filter((elemento) => elemento.id !== id);
+
       //Si el id no existe no cambió el tamaño de mi []
       if (objetoFiltrado.length === objetos.length) {
-        console.log(`Fue borrado el producto con el id ${id}`);
+        throw new Error(`No existe el producto con el id nro ${id}, no se elimina nada`);
       }
       //Escribir/guardar el nuevo [] con el objeto borrado
       await fs.writeFile(this.ruta, JSON.stringify(objetoFiltrado, null, 2));
     } catch (error) {
-      throw new Error(`Error: ${error}`);
+      console.log(`Error: ${error}`);
     }
   }
 
@@ -123,10 +125,9 @@ async function main() {
   console.log(`Id de producto 2`, producto2);
   console.log(`Id de producto 3`, producto3);
 
-  
   //Listado de productos - buscar por id GET BY ID
   console.log(`- Método GET BY ID -`);
-  let productoBuscado = await listaProductos.getById(2);
+  let productoBuscado = await listaProductos.getById(3);
   if (productoBuscado != undefined) {
     console.log(`El producto que buscabas es:`, productoBuscado);
   }
@@ -135,14 +136,14 @@ async function main() {
   console.log(`- Método GET ALL -`);
   listadoCompleto = await listaProductos.getAll();
   console.log(`Listado de productos completo:`, listadoCompleto);
-  
+
   //Listado de productos - borrar por id DELETE BY ID
   console.log(`- Método DELETE BY ID -`);
-  listadoCompleto = await listaProductos.deleteById(1);
+  listadoCompleto = await listaProductos.deleteById(3);
 
   console.log(`- Método DELETE ALL -`);
   //Listado de productos - vaciar todo DELETE ALL
-  listadoCompleto = await listaProductos.deleteAll()
+  //listadoCompleto = await listaProductos.deleteAll()
 }
 
 main();

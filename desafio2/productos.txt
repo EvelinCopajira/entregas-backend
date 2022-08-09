@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "title": "Pantalon",
+    "price": 1150,
+    "thumbnail": "url",
+    "id": 1
+  },
+  {
+    "title": "Pantalon corto",
+    "price": 850,
+    "thumbnail": "url",
+    "id": 2
+  },
+  {
+    "title": "Pantalon",
+    "price": 1150,
+    "thumbnail": "url",
+    "id": 4
+  },
+  {
+    "title": "Pantalon corto",
+    "price": 850,
+    "thumbnail": "url",
+    "id": 5
+  },
+  {
+    "title": "Remera",
+    "price": 250,
+    "thumbnail": "url",
+    "id": 6
+  }
+]
