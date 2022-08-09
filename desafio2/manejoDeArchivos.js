@@ -139,11 +139,11 @@ async function main() {
 
   //Listado de productos - borrar por id DELETE BY ID
   console.log(`- Método DELETE BY ID -`);
-  listadoCompleto = await listaProductos.deleteById(13);
+  listadoCompleto = await listaProductos.deleteById(33);
 
   console.log(`- Método DELETE ALL -`);
   //Listado de productos - vaciar todo DELETE ALL
-  //listadoCompleto = await listaProductos.deleteAll()
+  listadoCompleto = await listaProductos.deleteAll()
 }
 
 main();
