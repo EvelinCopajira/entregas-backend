@@ -29,7 +29,7 @@ class Contenedor {
       await fs.writeFile(this.ruta, JSON.stringify(objetos, null, 2));
       return nuevoId;
     } catch (error) {
-      throw new Error(`Error al guardar: ${error}`);
+      throw new Error(`Error: ${error}`);
     }
   }
 
@@ -78,7 +78,7 @@ class Contenedor {
       //Escribir/guardar el nuevo [] con el objeto borrado
       await fs.writeFile(this.ruta, JSON.stringify(objetoFiltrado, null, 2));
     } catch (error) {
-      console.log(`Error: ${error}`);
+      console.log(`Error deleteById: ${error}`);
     }
   }
 
@@ -129,7 +129,7 @@ async function main() {
   console.log(`- Método GET BY ID -`);
   let productoBuscado = await listaProductos.getById(3);
   if (productoBuscado != undefined) {
-    console.log(`El producto que buscabas es:`, productoBuscado);
+    console.log(`El producto con id nro ${productoBuscado.id} es:`, productoBuscado);
   }
 
   //Listado de productos - traer todos los disponibles GET ALL
@@ -139,7 +139,7 @@ async function main() {
 
   //Listado de productos - borrar por id DELETE BY ID
   console.log(`- Método DELETE BY ID -`);
-  listadoCompleto = await listaProductos.deleteById(3);
+  listadoCompleto = await listaProductos.deleteById(13);
 
   console.log(`- Método DELETE ALL -`);
   //Listado de productos - vaciar todo DELETE ALL

@@ -12,6 +12,12 @@
     "id": 2
   },
   {
+    "title": "Remera",
+    "price": 250,
+    "thumbnail": "url",
+    "id": 3
+  },
+  {
     "title": "Pantalon",
     "price": 1150,
     "thumbnail": "url",
@@ -28,5 +34,41 @@
     "price": 250,
     "thumbnail": "url",
     "id": 6
+  },
+  {
+    "title": "Pantalon",
+    "price": 1150,
+    "thumbnail": "url",
+    "id": 7
+  },
+  {
+    "title": "Pantalon corto",
+    "price": 850,
+    "thumbnail": "url",
+    "id": 8
+  },
+  {
+    "title": "Remera",
+    "price": 250,
+    "thumbnail": "url",
+    "id": 9
+  },
+  {
+    "title": "Pantalon",
+    "price": 1150,
+    "thumbnail": "url",
+    "id": 10
+  },
+  {
+    "title": "Pantalon corto",
+    "price": 850,
+    "thumbnail": "url",
+    "id": 11
+  },
+  {
+    "title": "Remera",
+    "price": 250,
+    "thumbnail": "url",
+    "id": 12
   }
 ]
