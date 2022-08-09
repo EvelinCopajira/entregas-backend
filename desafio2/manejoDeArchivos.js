@@ -10,23 +10,22 @@ class Contenedor {
   //Métodos
   //Recibe un objeto (nuevoObjeto) y guarda en el archivo y devuelve el id de ese objeto
   async save(nuevoObjeto) {
-    //Obtenengo los datos existentes con getAll()
-    const objetos = await this.getAll();
-
-    //Buscar el id contemplando si el [] está vacío y si tiene datos que al último le suma 1 unid.
-    let nuevoId;
-    if (objetos.length === 0) {
-      nuevoId = 1;
-    } else {
-      const ultimoId = objetos[objetos.length - 1].id;
-      nuevoId = ultimoId + 1;
-    }
-
-    //.push del nuevo producto al [] y le sumo la propiedad id
-    objetos.push({ id: nuevoId, ...nuevoObjeto });
-
-    //Escribir/guardar el nuevo [] con el objeto agregado usando async/await - try/catch
     try {
+      //Obtenengo los datos existentes con getAll()
+      const objetos = await this.getAll();
+
+      //Buscar el id contemplando si el [] está vacío y si tiene datos que al último le suma 1 unid.
+      let nuevoId;
+      if (objetos.length === 0) {
+        nuevoId = 1;
+      } else {
+        const ultimoId = objetos[objetos.length - 1].id;
+        nuevoId = ultimoId + 1;
+      }
+      //.push del nuevo producto al [] y le sumo la propiedad id
+      objetos.push({ id: nuevoId, ...nuevoObjeto });
+
+      //Escribir/guardar el nuevo [] con el objeto agregado
       await fs.writeFile(this.ruta, JSON.stringify(objetos, null, 2));
       return nuevoId;
     } catch (error) {
@@ -35,21 +34,22 @@ class Contenedor {
   }
 
   async getById(id) {
-    //Obtenengo los datos existentes con getAll()
-    const objetos = await this.getAll();
-
-    //.filter para identificar el objeto a traer por id
-    const objetoFiltrado = objetos.filter((elemento) => elemento.id === id);
-    //Si al buscar no encuentra nada, entonces el resultado no existe que traiga error
-    if (objetoFiltrado.length === 0) {
-      console.log(`Error al buscar: no se encontró el id ${id}`);
-    }
-    //Si existe, leo todo el archivo de productos.txt y parseo el string objetos usando async/await - try/catch
     try {
-      await fs.writeFile(this.ruta, JSON.stringify(objetoFiltrado, null, 2));
-      return JSON.parse(objetos);
+      //Obtenengo los datos existentes con getAll()
+      const objetos = await this.getAll();
+
+      //.filter para identificar el objeto a traer por id
+      const objetoFiltrado = objetos.filter((elemento) => elemento.id === id);
+
+      //Si al buscar no encuentra nada, entonces el resultado no existe que avise por consola, si no que traiga el producto con ese id
+      if (objetoFiltrado.length === 0) {
+        console.log(`Error al buscar, no se encontró el id ${id}`);
+      } else {
+        //Escribir/guardar el nuevo [] con el objeto buscado
+        return objetoFiltrado[0];
+      }
     } catch (error) {
-      return [];
+      throw new Error(`Error: ${error}`);
     }
   }
 
@@ -64,18 +64,16 @@ class Contenedor {
   }
 
   async deleteById(id) {
-    //Obtenengo los datos existentes con getAll()
-    const objetos = await this.getAll();
-
-    //.filter para identificar el objeto a elimianar por id
-    const objetoFiltrado = objetos.filter((elemento) => elemento.id !== id);
-    //Si el id no existe no cambió el tamaño de mi []
-    if (objetoFiltrado.length === objetos.length) {
-      throw new Error(`Error al borrar: no se encontró el id ${id}`);
-    }
-
-    //Escribir/guardar el nuevo [] con el objeto borrado usando async/await - try/catch
     try {
+      //Obtenengo los datos existentes con getAll()
+      const objetos = await this.getAll();
+      //.filter para identificar el objeto a elimianar por id
+      const objetoFiltrado = objetos.filter((elemento) => elemento.id !== id);
+      //Si el id no existe no cambió el tamaño de mi []
+      if (objetoFiltrado.length === objetos.length) {
+        console.log(`Fue borrado el producto con el id ${id}`);
+      }
+      //Escribir/guardar el nuevo [] con el objeto borrado
       await fs.writeFile(this.ruta, JSON.stringify(objetoFiltrado, null, 2));
     } catch (error) {
       throw new Error(`Error: ${error}`);
@@ -93,20 +91,58 @@ class Contenedor {
   }
 }
 
-//Creo elementos/listas dentro del contenedor con el constructor
-const listaProductos = new Contenedor("./productos.txt");
+//Llamado a métodos
+async function main() {
+  //Creo elementos/listas dentro del contenedor con el constructor
+  const listaProductos = new Contenedor("./productos.txt");
 
-//Listado de productos - agregar SAVE
-//listaProductos.save({ title: "Pantalon", price: 150 });
+  //Listado de productos - traer todos los disponibles GET ALL
+  console.log(`- Método GET ALL -`);
+  let listadoCompleto = await listaProductos.getAll();
+  console.log(`Listado de productos completo:`, listadoCompleto);
 
-//Listado de productos - buscar por id GET BY ID
-listaProductos.getById(44);
+  //Listado de productos - agregar SAVE
+  console.log(`- Método SAVE -`);
+  const producto1 = await listaProductos.save({
+    title: "Pantalon",
+    price: 1150,
+    thumbnail: "url",
+  });
+  const producto2 = await listaProductos.save({
+    title: "Pantalon corto",
+    price: 850,
+    thumbnail: "url",
+  });
+  const producto3 = await listaProductos.save({
+    title: "Remera",
+    price: 250,
+    thumbnail: "url",
+  });
 
-//Listado de productos - traer todos los disponibles GET ALL
-//listaProductos.getAll();
+  console.log(`Id de producto 1`, producto1);
+  console.log(`Id de producto 2`, producto2);
+  console.log(`Id de producto 3`, producto3);
 
-//Listado de productos - borrar por id DELETE BY ID
-//listaProductos.deleteById(1);
+  
+  //Listado de productos - buscar por id GET BY ID
+  console.log(`- Método GET BY ID -`);
+  let productoBuscado = await listaProductos.getById(2);
+  if (productoBuscado != undefined) {
+    console.log(`El producto que buscabas es:`, productoBuscado);
+  }
 
-//Listado de productos - vaciar todo DELETE ALL
-//listaProductos.deleteAll()
+  //Listado de productos - traer todos los disponibles GET ALL
+  console.log(`- Método GET ALL -`);
+  listadoCompleto = await listaProductos.getAll();
+  console.log(`Listado de productos completo:`, listadoCompleto);
+  
+  //Listado de productos - borrar por id DELETE BY ID
+  console.log(`- Método DELETE BY ID -`);
+  listadoCompleto = await listaProductos.deleteById(1);
+
+  console.log(`- Método DELETE ALL -`);
+  //Listado de productos - vaciar todo DELETE ALL
+  listadoCompleto = await listaProductos.deleteAll()
+}
+
+main();
