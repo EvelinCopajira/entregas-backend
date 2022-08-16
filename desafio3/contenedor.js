@@ -73,7 +73,9 @@ class Contenedor {
 
       //Si el id no existe no cambió el tamaño de mi []
       if (objetoFiltrado.length === objetos.length) {
-        throw new Error(`No existe el producto con el id nro ${id}, no se elimina nada`);
+        throw new Error(
+          `No existe el producto con el id nro ${id}, no se elimina nada`
+        );
       }
       //Escribir/guardar el nuevo [] con el objeto borrado
       await fs.writeFile(this.ruta, JSON.stringify(objetoFiltrado, null, 2));
@@ -93,4 +95,5 @@ class Contenedor {
   }
 }
 
-module.exports = Contenedor
+//Exporto el contenedor para reutilizar métodos
+module.exports = Contenedor;

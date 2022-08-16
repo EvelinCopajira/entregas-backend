@@ -4,41 +4,41 @@ const express = require("express");
 //Creo la app
 const app = express();
 
-//Endpoints
-//Importo módulo fs
-const fs = require("fs");
+//Importo clase Contenedor para usar sus métodos
+const contenedor = require("./contenedor");
+
+//Trabajo con los elementos dentro del contenedor y asociado al .txt
+const products = new contenedor("./productos.txt");
 
 //Mostrar todos los productos
-app.get("/productos", (req, res) => {
-  //Leo el archivo
-  fs.readFile("./productos.txt", "utf-8", (error, fileData) => {
-    if (error) {
-      console.log("Hubo un error");
-    }
-    //Parselo los datos
-    const listaProductos = JSON.parse(fileData);
+app.get("/productos", async (req, res) => {
+  try {
+    //Reutilizo métodos del la class
+    const showAll = await products.getAll();
 
     //Devuelvo un json
-    res.json({ listaProductos });
-  });
+    res.json(showAll);
+  } catch (error) {
+    console.log(`Hubo un error ${error}`);
+    res.status(500).send("No se pueden mostrar los productos");
+  }
 });
 
 //Mostrar producto random
-app.get("/productoRandom", (req, res) => {
-  //Leo el archivo
-  fs.readFile("./productos.txt", "utf-8", (error, fileDataR) => {
-    if (error) {
-      console.log("Hubo un error");
-    }
-    //Parselo los datos
-    const listaProductos = JSON.parse(fileDataR);
+app.get("/productoRandom", async (req, res) => {
+  try {
+    //Reutilizo métodos del la class
+    const showAll = await products.getAll();
 
     //Aleatorio Math floor y random
-    const productoRandom = Math.floor(Math.random() * listaProductos.length);
+    const productoRandom = Math.floor(Math.random() * showAll.length);
 
     //Devuelvo un json con el producto random
-    res.json({ producto: listaProductos[productoRandom] });
-  });
+    res.json({ producto: showAll[productoRandom] });
+  } catch (error) {
+    console.log(`Hubo un error ${error}`);
+    res.status(500).send("No se pueden mostrar los productos");
+  }
 });
 
 //Enviroment
@@ -47,4 +47,5 @@ const server = app.listen(PORT, () => {
   console.log(`Servidor Express escuchando en el puerto ${PORT}`);
 });
 
-server.on('error',(error)=> console.log(error));
+//Manejo de errores server.on
+server.on("error", (error) => console.log(error));
