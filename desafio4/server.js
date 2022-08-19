@@ -17,6 +17,8 @@ const contenedor = require("./contenedor");
 //Trabajo con los elementos dentro del contenedor y asociado al .txt
 const contendor = new contenedor("./productos.txt");
 
+const listaProductos = [];
+
 //Endpoints
 //GET PRODUCTOS
 productos.get("/", async (req, res) => {
@@ -33,8 +35,8 @@ productos.get("/", async (req, res) => {
 //GET PRODUCTOS BY ID
 productos.get("/:id", async (req, res) => {
   try {
-    let productoId = req.params.id;
-    let productoBuscado = await contendor.getById(productoId);
+    let id = req.params.id;
+    let productoBuscado = await contendor.getById(id);
     if (!productoBuscado) {
       return res.status(400).json({ error: `Producto no encontrado` });
     }
@@ -49,6 +51,7 @@ productos.post("/", async (req, res) => {
   try {
     const { title, price, thumbnail } = req.body;
     const productoNuevo = await contenedor.save({ title, price, thumbnail });
+    listaProductos.push({title, price, thumbnail})
     res.json({ producto: productoNuevo });
   } catch (error) {
     res.status(400).json(`No se puede agregar el producto: ${error}`);
@@ -59,8 +62,8 @@ productos.post("/", async (req, res) => {
 //DELETE PRODUCTOS BY ID
 productos.delete("/:id", async (req, res) => {
   try {
-    let productoId = req.params.id;
-    const productoAEliminar = contendor.deleteById(productoId);
+    let id = req.params.id;
+    const productoAEliminar = contendor.deleteById(id);
     res.json({ producto: productoAEliminar });
   } catch (error) {
     res.status(400).json(`No se puede eliiminar el producto: ${error}`);
