@@ -1,86 +1,116 @@
-//Importo 'fs' y lo asocio a promises para acortar código
-const { promises: fs } = require("fs");
-
 //Creo la clase CONTENEDOR
 class Contenedor {
   //Ruta del archivo
-  constructor(ruta) {
-    this.ruta = ruta;
+  constructor() {
+    this.listaProductos = [
+      {
+        title: "Pantalon",
+        price: 1150,
+        thumbnail: "url",
+        id: 1,
+      },
+      {
+        title: "Pantalon corto",
+        price: 850,
+        thumbnail: "url",
+        id: 2,
+      },
+      {
+        title: "Remera",
+        price: 250,
+        thumbnail: "url",
+        id: 3,
+      },
+    ];
   }
+
   //Métodos
-  //Recibe un producto (nuevoproducto) y guarda en el archivo y devuelve el id de ese producto
-  async save(nuevoProducto) {
+  //CREATE
+  //Recibe un producto (nuevoproducto) y guarda en el archivo y le asigna un el id a ese producto
+  async create(nuevoProducto) {
     try {
-      //Obtenengo los datos existentes con getAll()
-      const productos = await this.getAll();
+      //Validación para asignarle 1 al primer producto, si el array está vacío, y sino sumarle 1 al último que tenga creado
+      const nuevoId =
+        this.listaProductos.length == 0
+          ? 1
+          : this.listaProductos[this.listaProductos.length - 1].id + 1;
 
-      //Buscar el id contemplando si el [] está vacío y si tiene datos que al último le suma 1 unid.
-      let nuevoId;
-      if (productos.length === 0) {
-        nuevoId = 1;
-      } else {
-        const ultimoId = productos[productos.length - 1].id;
-        nuevoId = ultimoId + 1;
+      //Sumo el id generado al producto
+      nuevoProducto = { ...nuevoProducto, id: nuevoId };
+
+      //.push del nuevo producto al []
+      this.listaProductos.push(nuevoProducto);
+
+      return nuevoProducto;
+    } catch (error) {
+      throw new Error(`Error: ${error}`);
+    }
+  }
+  //GET BY ID
+  async getById(id) {
+    try {
+      //.filter para identificar el producto a filtrar por id
+      const productoFiltrado = this.listaProductos.filter(
+        (elemento) => elemento.id == id
+      );
+
+      //Si al buscar no encuentra nada, entonces el resultado es null
+      if (productoFiltrado.length === 0) {
+        return null;
       }
-      //.push del nuevo producto al [] y le sumo la propiedad id
-      productos.push({ ...nuevoProducto, id: nuevoId });
 
-      //Escribir/guardar el nuevo [] con el producto agregado
-      await fs.writeFile(this.ruta, JSON.stringify(productos, null, 2));
-      return nuevoId;
+      //Escribir/guardar el nuevo [] con el producto buscado
+      return productoFiltrado[0];
     } catch (error) {
       throw new Error(`Error: ${error}`);
     }
   }
 
-  async getById(id) {
+  //GET ALL
+  async getAll() {
     try {
-      //Obtenengo los datos existentes con getAll()
-      const productos = await this.getAll();
-
-      //.filter para identificar el producto a traer por id
-      const productoFiltrado = productos.filter((elemento) => elemento.id === id);
-
-      //Si al buscar no encuentra nada, entonces el resultado no existe que avise por consola, si no que traiga el producto con ese id
-      if (productoFiltrado.length === 0) {
-        throw new Error(`No se encontró el id ${id}`);
-      } else {
-        //Escribir/guardar el nuevo [] con el producto buscado
-        return productoFiltrado[0];
-      }
+      return this.listaProductos;
     } catch (error) {
-      console.log(`Error getById: ${error}`);
+      throw new Error(`Error: ${error}`);
     }
   }
 
-  async getAll() {
-    //Leo todo el archivo de productos.txt y parseo el string productos usando async/await - try/catch
+  //MODIFY BY ID
+  //Según el id que quiero modificar le asigno nuevosValores para reescribirlo
+  async modifyById(id, nuevosValores) {
     try {
-      const productos = await fs.readFile(this.ruta, "utf-8");
-      return JSON.parse(productos);
+      //.filter para identificar el producto a traer por id
+      const productoFiltrado = this.listaProductos.filter(
+        (elemento) => elemento.id == id
+      );
+
+      //Si al buscar no encuentra nada, entonces el resultado es null
+      if (productoFiltrado.length === 0) {
+        return null;
+      }
+
+      //"Piso" los valores, con los nuevos ingresos que hago a title, price y thumbnail. No traigo id porque no permito que se modifique. Si lo agrega lo ignora
+      productoFiltrado[0].title = nuevosValores.title;
+      productoFiltrado[0].price = nuevosValores.price;
+      productoFiltrado[0].thumbnail = nuevosValores.thumbnail;
+
+      return productoFiltrado[0];
     } catch (error) {
-      return [];
+      throw new Error(`Error: ${error}`);
     }
   }
 
   async deleteById(id) {
     try {
-      //Obtenengo los datos existentes con getAll()
-      const productos = await this.getAll();
+      //.filter para identificar el producto a elimianar por id y traer una nueva lista sin ese producto
+      const otrosProductos = this.listaProductos.filter(
+        (elemento) => elemento.id != id
+      );
 
-      //.filter para identificar el producto a elimianar por id
-      const productoFiltrado = productos.filter((elemento) => elemento.id !== id);
-
-      //Si el id no existe no cambió el tamaño de mi []
-      if (productoFiltrado.length === productos.length) {
-        throw new Error(
-          `No existe el producto con el id nro ${id}, no se elimina nada`
-        );
-      }
-      //Escribir/guardar el nuevo [] con el producto borrado
-      await fs.writeFile(this.ruta, JSON.stringify(productoFiltrado, null, 2));
+      //Guardo el resto de productos, sobre listaProductos y no traigo nada más porque ya se eliminó
+      this.listaProductos = otrosProductos;
     } catch (error) {
-      console.log(`Error deleteById: ${error}`);
+      throw new Error(`Error: ${error}`);
     }
   }
 }
