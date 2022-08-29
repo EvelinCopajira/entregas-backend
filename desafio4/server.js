@@ -11,6 +11,9 @@ const productos = Router();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Static
+app.use(express.static('public'))
+
 //Importo clase contenedorProductos para usar sus métodos
 const contenedor = require("./contenedor");
 
