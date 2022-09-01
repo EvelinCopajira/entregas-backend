@@ -1,0 +1,13 @@
+<h1>PRODUCTOS AGREGADOS - HANDLEBARS</h1>
+
+{{#if productos.length}}
+  <ul>
+    {{#each productos}}
+      <li>Producto: {{this.title}}</li>
+      <li>Precio: ${{this.price}}</li>
+      <li>ID: {{this.id}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+<a href="/"><button class="btn">VOLVER AL FORUMLARIO</button></a>

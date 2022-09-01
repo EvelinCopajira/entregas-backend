@@ -1,0 +1,11 @@
+<h1>PRODUCTOS AGREGADOS - EJS</h1>
+
+<ul>
+  <% productos.forEach(producto => { %>
+  <li>PRODUCTO: <%= this.title %></li>
+  <li>PRECIO: $<%= this.price %></li>
+  <li>ID: <%= this.id %></li>
+  <% }) %>
+</ul>
+
+<a href="/"><button class="btn">VOLVER AL FORUMLARIO</button></a>

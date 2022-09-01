@@ -1,0 +1,13 @@
+html 
+    head 
+        title='PUG'
+    body 
+        h1='PRODUCTOS AGREGADOS - PUG'
+        ul 
+            each producto in productos
+                li= `PRODUCTO: ${producto.title}`
+                li= `PRECIO: ${producto.price}`
+                li= `ID: ${producto.id}`
+        a(href="/") 
+            button(type='submit') VOLVER AL FORMULARIO 
+

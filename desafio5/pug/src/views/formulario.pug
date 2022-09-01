@@ -1,0 +1,16 @@
+html 
+    head
+        title='PUG'
+    body
+        h1='FORUMLARIO - PUG'
+        form(action="productos", method='POST')
+            div  
+                label(for="title") PRODUCTO:
+                input(type="text", name="title")
+            div  
+                label(for="price") PRECIO:
+                input(type="text", name='price')
+            div  
+                label(for="thumbnail") IMAGEN :
+                input(type="text", name='thumbnail')
+            button(type='submit') GUARDAR PRODUCTO
