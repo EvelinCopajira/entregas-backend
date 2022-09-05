@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- SOCKET IO -->
+    <script
+    src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+    integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+    crossorigin="anonymous"
+    ></script>
+    <!-- HANDLEBARS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <title>Websockets</title>
+</head>
+  <body>
+    <div>
+      <h1>FORMULARIO WEBSOCKETS</h1>
+      <form id="formulario">
+        <div>
+          <label for="title">PRODUCTO:</label>
+          <input id="title" type="text" name="title" />
+        </div>
+        <div>
+          <label for="price">PRECIO:</label>
+          <input id="price" type="number" name="price" />
+        </div>
+        <div>
+          <label for="thumbnail">IMAGEN:</label>
+          <input id="thumbnail" type="text" name="thumbnail" />
+        </div>
+        <button type="submit" id="submit">GUARDAR PRODUCTO</button>
+      </form>
+
+    </div>
+
+    <div id="productos">
+      <h2>LISTA DE PRODUCTOS</h2>
+    </div>
+
+    <div id="centro-mensajes">
+      <h2>CENTRO DE MENSAJES</h2>
+      <form id="formulario-msj">
+        <label for="mail">MAIL:</label>
+        <input id="email" type="email" name="email" placeholder="example@gmail.com"/>
+        <label for="mensaje">MENSAJE:</label>
+        <input id="mensaje" type="text" name="mensaje" placeholder="Ingrese un mensaje"/>
+        <button type="submit" id="submit-msj">ENVIAR MENSAJE</button>
+      </form>
+      <div id="mensajes"></div>
+    
+
+    </div>
+    <!-- JS -->
+    <script src="js/main.js"></script>
+  </body>
+</html>

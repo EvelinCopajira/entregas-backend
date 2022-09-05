@@ -1,0 +1,18 @@
+{{!-- Valido que la lista existe porque tiene productos --}}
+{{#if productos.length}}
+<table>
+    <tr>
+        <th>PRODUCTO</th>
+        <th>PRECIO</th>
+        <th>IMAGEN</th>
+    </tr>
+    {{!-- Itero sobre cada producto de la lista para mostrarlo en la tabla --}}
+    {{#each productos}}
+        <tr>
+            <td>{{this.title}}</td>
+            <td>{{this.price}}</td>
+            <td><img src=={{this.thumbnail}} /></td>
+        </tr>
+    {{/each}}
+</table>
+{{/if}}
