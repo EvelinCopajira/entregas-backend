@@ -1,0 +1,22 @@
+[
+    {
+        id: 1,
+        timestamp: "",
+        nombre: "Pantalon",
+        descripcion: "",
+        codigo: "",
+        thumbnail: "url",
+        precio: 1150,
+        stock: 3,
+    },
+    {
+        id: 2,
+        timestamp: "",
+        nombre: "Pantalon corto",
+        descripcion: "",
+        codigo: "",
+        thumbnail: "url",
+        precio: 850,
+        stock: 9,
+    },
+];
