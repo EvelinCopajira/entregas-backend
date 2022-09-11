@@ -21,13 +21,13 @@ productos.get("/:id?", async (req, res) => {
     } else {
       const productoBuscado = await contenedorProductos.getById(id);
       if (!productoBuscado) {
-        return res.status(404).json({ error: `Producto no encontrado` });
+        return res.status(400).json({ error: `Producto no encontrado` });
       }
       //Devuelvo un json
       res.json(productoBuscado);
     }
   } catch (error) {
-    res.status(500).json(`Proucto no encontrado: ${error}`);
+    console.log(`El error es: ${error}`);
   }
 });
 
@@ -35,11 +35,11 @@ productos.get("/:id?", async (req, res) => {
 productos.post("/", async (req, res) => {
   try {
     const { nombre, descripcion, codigo, thumbnail, precio, stock } = req.body;
-
+    //Valido que se ingresen todos los datos necesarios para crear un producto
     if (!nombre || !descripcion || !codigo || !thumbnail || !precio || !stock) {
       res.status(400).json(`Debe ingresar todos los datos del producto`);
     }
-    //Guardo en una variable los nuevos
+    //Guardo en una variable las keys de los nuevos productos
     const productoNuevo = await contenedorProductos.save({
       nombre,
       descripcion,
@@ -59,21 +59,26 @@ productos.post("/", async (req, res) => {
 productos.put("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    const { nombre, precio, thumbnail } = req.body;
-
+    const { nombre, descripcion, codigo, thumbnail, precio, stock } = req.body;
+    //Valido que se ingresen todos los datos necesarios para crear un producto
+    if (!nombre || !descripcion || !codigo || !thumbnail || !precio || !stock) {
+      res.status(400).json(`Debe ingresar todos los datos del producto`);
+    }
     //Guardo en una variable los elementos que quiero modificar según el id que le pase
     const productoModificado = await contenedorProductos.modifyById(id, {
       nombre,
-      precio,
+      descripcion,
+      codigo,
       thumbnail,
+      precio,
+      stock,
     });
-
-    //Valido si el id eiste
+    //Valido si el id existe
     if (!productoModificado) {
       return res.status(404).json({ error: `Producto no encontrado` });
     }
     //Devuelvo un json
-    res.json({ productoModificado });
+    res.status(200).json(productoModificado);
   } catch (error) {
     res.status(500).json(`No se puede modificar el producto: ${error}`);
   }
@@ -83,13 +88,10 @@ productos.put("/:id", async (req, res) => {
 productos.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-
     //Guardo en una variable el producto que quiero modificar según el id que le pase
     const productoEliminado = await contenedorProductos.deleteById(id);
-
     //Devuelvo un json vacío porque el producto ya fue eliminado
-    res.json({});
-    //res.status(204); - CONSULTAR SI SE USA ESTE ERROR
+    res.status(200).json(`Producto eliminado con éxito`);
   } catch (error) {
     res.status(500).json(`No se puede eliiminar el producto: ${error}`);
   }
