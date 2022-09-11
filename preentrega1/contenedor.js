@@ -3,36 +3,16 @@ const { promises: fs } = require("fs");
 //Creo la clase CONTENEDOR
 class Contenedor {
   //Ruta del archivo
-  constructor() {
-    this.listaProductos = [
-      {
-        id: 1,
-        timestamp: 1662774219923,
-        nombre: "Pantalon",
-        descripcion: "",
-        codigo: "",
-        thumbnail: "url",
-        precio: 1150,
-        stock: 3,
-      },
-      {
-        id: 2,
-        timestamp: 1662774219933,
-        nombre: "Pantalon corto",
-        descripcion: "",
-        codigo: "",
-        thumbnail: "url",
-        precio: 850,
-        stock: 9,
-      },
-    ];
+  constructor(ruta) {
+    this.ruta = ruta;
   }
 
   //Métodos
   //GET ALL
   async getAll() {
     try {
-      return this.listaProductos;
+      const listaProductos = await fs.readFile(this.ruta, "utf-8");
+      return JSON.parse(listaProductos);
     } catch (error) {
       console.log(`El error es: ${error}`);
     }
@@ -40,8 +20,10 @@ class Contenedor {
   //GET BY ID
   async getById(id) {
     try {
+      //Obtenengo los datos existentes con getAll()
+      const listaProductos = await this.getAll();
       //.filter para identificar el producto a filtrar por id
-      const productoFiltrado = this.listaProductos.filter(
+      const productoFiltrado = listaProductos.filter(
         (elemento) => elemento.id == id
       );
       //Si al buscar no encuentra nada, entonces el resultado es null
@@ -57,17 +39,21 @@ class Contenedor {
   //SAVE
   async save(nuevoProducto) {
     try {
+      //Obtenengo los datos existentes con getAll()
+      const listaProductos = await this.getAll();
       //Validación para asignarle 1 al primer producto, si el array está vacío, y sino sumarle 1 al último que tenga creado
       const nuevoId =
-        this.listaProductos.length == 0
+        listaProductos.length == 0
           ? 1
-          : this.listaProductos[this.listaProductos.length - 1].id + 1;
+          : listaProductos[listaProductos.length - 1].id + 1;
       //Timestamp
       const timeStamp = Date.now();
       //Sumo el id generado al producto
       nuevoProducto = { id: nuevoId, timestamp: timeStamp, ...nuevoProducto };
       //.push del nuevo producto al []
-      this.listaProductos.push(nuevoProducto);
+      listaProductos.push(nuevoProducto);
+      //Escribir/guardar el nuevo [] con el producto agregado
+      await fs.writeFile(this.ruta, JSON.stringify(listaProductos, null, 2));
       return nuevoProducto;
     } catch (error) {
       console.log(`El error es: ${error}`);
@@ -77,8 +63,10 @@ class Contenedor {
   //Según el id que quiero modificar le asigno nuevosValores para reescribirlo
   async modifyById(id, nuevosValores) {
     try {
+      //Obtenengo los datos existentes con getAll()
+      const listaProductos = await this.getAll();
       //.filter para identificar el producto a traer por id
-      const productoFiltrado = this.listaProductos.filter(
+      const productoFiltrado = listaProductos.filter(
         (elemento) => elemento.id == id
       );
       //Si al buscar no encuentra nada, entonces el resultado es null
@@ -92,6 +80,8 @@ class Contenedor {
       productoFiltrado[0].thumbnail = nuevosValores.thumbnail;
       productoFiltrado[0].precio = nuevosValores.precio;
       productoFiltrado[0].stock = nuevosValores.stock;
+      //Escribir/guardar el nuevo [] con el producto modificado
+      await fs.writeFile(this.ruta, JSON.stringify(listaProductos, null, 2));
       return productoFiltrado[0];
     } catch (error) {
       console.log(`El error es: ${error}`);
@@ -100,12 +90,14 @@ class Contenedor {
   //DELETE BY ID
   async deleteById(id) {
     try {
+      //Obtenengo los datos existentes con getAll()
+      const listaProductos = await this.getAll();
       //.filter para identificar el producto a elimianar por id y traer una nueva lista sin ese producto
-      const otrosProductos = this.listaProductos.filter(
+      const otrosProductos = listaProductos.filter(
         (elemento) => elemento.id != id
       );
-      //Guardo el resto de productos, sobre listaProductos y no traigo nada más porque ya se eliminó
-      this.listaProductos = otrosProductos;
+      //Escribir/guardar el nuevo [] con el objeto borrado
+      await fs.writeFile(this.ruta, JSON.stringify(otrosProductos, null, 2));
     } catch (error) {
       console.log(`El error es: ${error}`);
     }

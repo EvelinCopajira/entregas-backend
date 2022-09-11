@@ -7,7 +7,7 @@ const productos = Router();
 const contenedor = require("../contenedor");
 
 //Trabajo con los elementos del contenedor
-const contenedorProductos = new contenedor();
+const contenedorProductos = new contenedor("./dataBase/productos.txt");
 
 //Endpoints
 //GET PRODUCT /:id?
@@ -88,12 +88,16 @@ productos.put("/:id", async (req, res) => {
 productos.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    //Guardo en una variable el producto que quiero modificar según el id que le pase
+    //Guardo en una variable el producto que quiero eliminar segun el id que le pase
     const productoEliminado = await contenedorProductos.deleteById(id);
+    //Valido si el id existe
+    if (!productoEliminado) {
+      return res.status(404).json({ error: `Producto no encontrado` });
+    }
     //Devuelvo un json vacío porque el producto ya fue eliminado
     res.status(200).json(`Producto eliminado con éxito`);
   } catch (error) {
-    res.status(500).json(`No se puede eliiminar el producto: ${error}`);
+    res.status(500).json(`No se puede eliminar el producto: ${error}`);
   }
 });
 
