@@ -1,12 +1,1 @@
-[
-  {
-    "id": 2,
-    "timestamp": 1662922329810,
-    "nombre": "Pantalon corto",
-    "descripcion": "",
-    "codigo": "",
-    "thumbnail": "url",
-    "precio": 850,
-    "stock": 9
-  }
-]
+[]

@@ -3,17 +3,18 @@ const express = require("express");
 //Creo la app
 const app = express();
 
+//boolean para verificar si soy usuario o administrador
+global.administrador = true;
+console.log(`App executing in ${administrador ? "admin" : "user"} mode`);
+
 //Middleware a nivel app
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//Static
-app.use(express.static("public"));
+//Require desde routes para usar el router de productos y carrito
+const { productos } = require("./controllers/controllerProductos");
 
-//Require desde routes para usar el router de productos
-const { productos } = require("./routes/productRoutes");
-
-//Asigno una ruta al Router "productos"
+//Asigno una ruta al Router "productos" y "carrito"
 app.use("/api/productos", productos);
 
 //Enviroment
