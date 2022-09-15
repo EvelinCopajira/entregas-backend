@@ -5,7 +5,7 @@ class Contenedor {
   //Ruta del archivo
   constructor() {
     this.ruta = "./dataBase/productos.txt";
-    // this.ruta = "./preentrega11/dataBase/productos.txt";
+    //this.ruta = "./preentrega1/dataBase/productos.txt";
   }
 
   //Métodos

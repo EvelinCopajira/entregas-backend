@@ -1,6 +1,9 @@
 //Require del repositorio para usar sus métodos - lo traigo desde persistence
 const moduloRepositorioCarritos = require("../persistence/repositorioCarritos");
 const respositorioCarritos = new moduloRepositorioCarritos();
+//Require del repositorio para usar sus métodos - lo traigo desde persistence
+const moduloRepositorioProductos = require("../persistence/repositorioProductos");
+const repositorioProductos = new moduloRepositorioProductos();
 
 class CartService {
   //CREATE CARRITO
@@ -34,6 +37,50 @@ class CartService {
       carritoAEliminar.productos = [];
       await respositorioCarritos.deleteById(id);
     }
+  }
+  //GET PRODUCTS IN CART BY ID
+  async getCartProducts(id) {
+    const carrito = await respositorioCarritos.getById(id);
+    //Valido que el caarrito existe
+    if (carrito == null) {
+      throw new Error("No se puede traer el carrito");
+    }
+    //Con .map traigo todos los productos del carrito que tenga el id que le estoy pasando
+    return await Promise.all(
+      carrito.productos.map(async (productId) => {
+        return await repositorioProductos.getById(productId);
+      })
+    );
+  }
+  //POST PRODUCTS IN CART BY ID
+  async addProductToCart(id, productId) {
+    const carrito = await respositorioCarritos.getById(id);
+    //Valido que el caarrito existe
+    if (carrito == null) {
+      throw new Error("No se puede traer el carrito");
+    }
+    //Si el carrito existe, traigo de repositorio productos los id's disponibles para agregar
+    const product = await repositorioProductos.getById(productId);
+    if (product == null) {
+      throw new Error("No existe el producto");
+    }
+    //Le agrego el product.id a un carrito especifico
+    carrito.productos.push(product.id);
+    return await respositorioCarritos.saveCart(carrito);
+  }
+  //DELETE PRODUCTS BY ID IN CART BY ID
+  async deleteProductInCart(id, productId) {
+    const carrito = await respositorioCarritos.getById(id);
+    //Valido que el carrito existe
+    if (carrito == null) {
+      throw new Error("No se puede traer el carrito");
+    }
+    //Si el carrito existe, traigo de repositorio productos los id's disponibles para eliminar
+    const product = await repositorioProductos.getById(productId);
+    if (product == null) {
+      throw new Error("No existe el producto");
+    }
+    await repositorioProductos.deleteById(productId);
   }
 }
 

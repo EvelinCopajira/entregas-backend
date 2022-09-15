@@ -1,7 +1,3 @@
-// get by id: read al archivo de carritos.txt
-// Luego lees los product_ids que tenga el carrito que buscaste,
-// Finalmente, con esos ids, vas al repositorio de producto, y te traes esos productos y lo asignas a la estructura de carrito que piden
-
 //Require 'fs' y lo asocio a promises para acortar código
 const { promises: fs } = require("fs");
 //Creo la clase CONTENEDOR
@@ -9,6 +5,7 @@ class Contenedor {
   //Ruta del archivo
   constructor() {
     this.ruta = "./dataBase/carritos.txt";
+    // this.ruta = "./preentrega1/dataBase/carritos.txt";
   }
 
   //Métodos
@@ -17,8 +14,18 @@ class Contenedor {
     try {
       //Obtenengo los datos existentes con getAll()
       const listaCarritos = await this.getAll();
-      //.push del nuevo carrito al []
-      listaCarritos.push(carrito);
+      //.filter para traer el carrito con el mismo id (si existe)
+      const carritosFiltrados = listaCarritos.filter(
+        (elem) => elem.id == carrito.id
+      );
+      //si el carrito no existe hago .push y lo creo
+      if (carritosFiltrados.length == 0) {
+        //.push del nuevo carrito al []
+        listaCarritos.push(carrito);
+      } else {
+        //"Piso" los valores, con los nuevos ingresos que hago a nombre, precio y thumbnail. No traigo id porque no permito que se modifique
+        carritosFiltrados[0].productos = carrito.productos;
+      }
       //Escribir/guardar el nuevo [] con el carrito agregado
       await fs.writeFile(this.ruta, JSON.stringify(listaCarritos, null, 2));
       return carrito;
