@@ -69,12 +69,10 @@ carritos.get("/:id/productos", async (req, res) => {
 // POST ID/PRODUCTOS
 carritos.post("/:id/productos", async (req, res) => {
   const id = req.params.id;
+  const product_id = req.body.product_id;
   try {
     //Guardo en una variable el carrito al que le voy a agregar productos según el id que le pase
-    const carritoNuevo = await cartService.addProductToCart(
-      id,
-      req.body.product_id
-    );
+    const carritoNuevo = await cartService.addProductToCart(id, product_id);
     //Devuelvo un json
     res.status(200).json(carritoNuevo);
   } catch (error) {
@@ -87,12 +85,10 @@ carritos.post("/:id/productos", async (req, res) => {
 //DELETE ID/PRODUCTOS/ID_PROD
 carritos.delete("/:id/productos/:product_id", async (req, res) => {
   const id = req.params.id;
+  const product_id = req.params.product_id;
   try {
     //Guardo en una variable el carrito al que le voy a eliminar productos según el id que le pase
-    const carritoNuevo = await cartService.deleteProductInCart(
-      id,
-      req.body.product_id
-    );
+    const carritoNuevo = await cartService.deleteProductInCart(id, product_id);
     //Devuelvo un json
     res.status(200).json(carritoNuevo);
   } catch (error) {

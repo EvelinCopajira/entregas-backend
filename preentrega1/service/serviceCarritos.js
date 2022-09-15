@@ -75,12 +75,10 @@ class CartService {
     if (carrito == null) {
       throw new Error("No se puede traer el carrito");
     }
-    //Si el carrito existe, traigo de repositorio productos los id's disponibles para eliminar
-    const product = await repositorioProductos.getById(productId);
-    if (product == null) {
-      throw new Error("No existe el producto");
-    }
-    await repositorioProductos.deleteById(productId);
+    carrito.productos = carrito.productos.filter(
+      (productIdInCart) => productIdInCart != productId
+    );
+    return await respositorioCarritos.saveCart(carrito);
   }
 }
 
