@@ -1,0 +1,22 @@
+[
+  {
+    "id": 2,
+    "timestamp": 1662922329810,
+    "nombre": "Pollera",
+    "descripcion": "rojo",
+    "codigo": "poll4",
+    "thumbnail": "url",
+    "precio": 1950,
+    "stock": 5
+  },
+  {
+    "id": 3,
+    "timestamp": 1662925719579,
+    "nombre": "Vestido",
+    "descripcion": "rojo",
+    "codigo": "ves1",
+    "thumbnail": "url",
+    "precio": 950,
+    "stock": 2
+  }
+]

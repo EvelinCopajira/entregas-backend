@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1,
+    "timestamp": 1662931415017,
+    "nombre": "Vestido",
+    "descripcion": "rojo",
+    "codigo": "ves1",
+    "thumbnail": "url",
+    "precio": 950,
+    "stock": 2
+  },
+  {
+    "id": 2,
+    "timestamp": 1662932507757
+  },
+  {
+    "id": 3,
+    "timestamp": 1662932549894,
+    "productos": []
+  }
+]

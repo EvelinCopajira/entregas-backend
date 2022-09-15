@@ -45,7 +45,7 @@ class Contenedor {
     }
   }
   //SAVE
-  async save(producto) {
+  async saveProduct(producto) {
     try {
       //Obtenengo los datos existentes con getAll()
       const listaProductos = await this.getAll();
@@ -58,7 +58,7 @@ class Contenedor {
         //.push del nuevo producto al []
         listaProductos.push(producto);
       } else {
-        //"Piso" los valores, con los nuevos ingresos que hago a nombre, precio y thumbnail. No traigo id porque no permito que se modifique. Si lo agrega lo ignora
+        //"Piso" los valores, con los nuevos ingresos que hago a nombre, precio y thumbnail. No traigo id porque no permito que se modifique
         productosFiltrados[0].nombre = producto.nombre;
         productosFiltrados[0].descripcion = producto.descripcion;
         productosFiltrados[0].codigo = producto.codigo;
